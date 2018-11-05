@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/style.css"/>
+    <link rel="icon" 
+      type="image/png" 
+      href="images/xkcd_favicon.png"/>
+    <title>XKCD Clone</title>
+    <script type="text/javascript">
+        function newpage(){
+        var first_img;
+        fetch('https://cors.io/?https://xkcd.com/info.0.json').then(response => {
+            return response.json();
+            }).then(data => {
+            console.log(data);
+            first_img = data.img;
+            number = data.num;
+            var image = document.getElementById("new");
+            image.src = data.img;
+            var a = data.safe_title;
+            document.getElementById("title").innerHTML = a;
+            return true;
+            });
+        }
+        window.onpaint = newpage();
+    </script>
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+  <script>
+      $(document).ready(function () {
+          // Hide the div
+          $("#app").hide();
+          // Show the div after 5s
+          $("#app").delay(2000).fadeIn(100);  
+      });    
+  </script>
+</head>
+<body>
+    <div id="app">
+        <div id="bottom" class="box">
+            <div v-if="loading">
+            <p></p>
+            </div>
+            <div v-else>
+            <div id="title">{{ current.safe_title }}</div>
+            <ul class="comicNav">
+                <li><a href="#" onclick="firstcomic()">First</a></li>
+                <li><a href="#" onclick="prevcomic()">Previous</a></li>
+                <li><a href="#" onclick="randomcomic()">Random</a></li>
+                <li><a href="#" onclick="nextcomic()">Next</a></li>
+                <li><a href="#" onclick="lastcomic()">Last</a></li>
+            </ul>
+            <img id="new" src="">
+            <ul class="comicNav">
+                <li><a href="#" onclick="firstcomic()">First</a></li>
+                <li><a href="#" onclick="prevcomic()">Previous</a></li>
+                <li><a href="#" onclick="randomcomic()">Random</a></li>
+                <li><a href="#" onclick="nextcomic()">Next</a></li>
+                <li><a href="#" onclick="lastcomic()">Last</a></li>
+            </ul>
+            </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+        var first_img;
+        fetch('https://cors.io/?https://xkcd.com/info.0.json').then(response => {
+            return response.json();
+            }).then(data => {
+            first_img = data.img;
+            return true;
+            })
+        var number="";
+        var current={};
+        var loading=true;
+        var max="";
+        var remaining="";
+        function getMax(){
+            fetch('https://cors.io/?https://xkcd.com/info.0.json').then(response => {
+            return response.json();
+            }).then(data => {
+            max = data.num;
+            return true;
+            })
+        }
+
+        function randomize(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random()*(max-min+1))+min;
+        }
+
+        function randomcomic(){
+            loading = true;
+            getMax();
+            number = randomize(1,max);
+            console.log(number);
+            fetch('https://cors.io/?https://xkcd.com/'+number+'/info.0.json').then(response => {
+            return response.json();
+            }).then(data => {
+            current=data;
+            console.log(current);
+            var image = document.getElementById("new");
+            image.src = data.img;
+            var a = data.safe_title;
+            document.getElementById("title").innerHTML = a;
+            loading = false;
+            number = data.num;
+            return true;
+            }).catch(err => {
+                getMax()
+                number=max;
+            }); 
+        }
+
+          function firstcomic(){
+            loading = true;
+            console.log(number);
+            fetch('https://cors.io/?https://xkcd.com/1/info.0.json').then(response => {
+            return response.json();
+            }).then(data => {
+            current=data;
+            console.log(current);
+            var image = document.getElementById("new");
+            image.src = data.img;
+            var a = data.safe_title;
+            document.getElementById("title").innerHTML = a;
+            loading = false;
+            number = data.num;
+            return true;
+            }).catch(err => {
+                getMax()
+                number=max;
+            });
+          }
+          function prevcomic(){
+            loading = true;
+            console.log(number);
+            if(number>=2)
+            number = number-1;
+            else{
+                number = "1";
+            }
+            fetch('https://cors.io/?https://xkcd.com/'+number+'/info.0.json').then(response => {
+            return response.json();
+            }).then(data => {
+            current=data;
+            console.log(current);
+            var image = document.getElementById("new");
+            image.src = data.img;
+            var a = data.safe_title;
+            document.getElementById("title").innerHTML = a;
+            loading = false;
+            number = data.num;
+            return true;
+            }).catch(err => {
+                getMax();
+                number=max;
+            });
+          }
+          function nextcomic(){
+            loading = true;
+            console.log(number);
+            getMax();
+            if(number==max)
+                number=max;
+            else
+            number = number+1;
+            fetch('https://cors.io/?https://xkcd.com/'+number+'/info.0.json').then(response => {
+            return response.json();
+            }).then(data => {
+            current=data;
+            console.log(current);
+            var image = document.getElementById("new");
+            image.src = data.img;
+            var a = data.safe_title;
+            document.getElementById("title").innerHTML = a;
+            loading = false;
+            number = data.num;
+            return true;
+            }).catch(err => {
+                getMax();
+                number=max;
+            });
+          }
+          function lastcomic(){
+            loading = true;
+            getMax();
+            number = max;
+            console.log(number);
+            fetch('https://cors.io/?https://xkcd.com/'+number+'/info.0.json').then(response => {
+            return response.json();
+            }).then(data => {
+            current=data;
+            console.log(current.img);
+            var image = document.getElementById("new");
+            image.src = data.img;
+            var a = data.safe_title;
+            document.getElementById("title").innerHTML = a;
+            loading = false;
+            number = data.num;
+            return true;
+            }).catch(err => {
+                getMax();
+                number=max;
+            });
+          }
+
+
+      </script>
+    </body>
+</html>
