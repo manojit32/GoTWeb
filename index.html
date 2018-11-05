@@ -106,7 +106,7 @@ function getname(){
 var name = document.getElementById("search2").value;
 name=name.replace(/ /g,"+");
 var new_name;
-fetch('https://cors.io/?https://anapioficeandfire.com/api/characters?name='+name).then(response => {
+fetch('https://anapioficeandfire.com/api/characters?name='+name).then(response => {
             return response.json();
             }).then(data => {
              new_name= data.name;
@@ -134,7 +134,7 @@ function gethouse(){
 var nname = document.getElementById("search").value;
 nname=nname.replace(/ /g,"+");
 var new_name;
-fetch('https://cors.io/?https://anapioficeandfire.com/api/houses?name='+nname).then(response => {
+fetch('https://anapioficeandfire.com/api/houses?name='+nname).then(response => {
             return response.json();
             }).then(data => {
              new_name= data.name;
@@ -166,7 +166,7 @@ function getcharhouse(){
 var nname = document.getElementById("search3").value;
 nname=nname.replace(/ /g,"+");
 var new_name;
-fetch('https://cors.io/?https://anapioficeandfire.com/api/houses?name='+nname).then(response => {
+fetch('https://anapioficeandfire.com/api/houses?name='+nname).then(response => {
             return response.json();
             }).then(data => {
              new_name= data.name;
@@ -191,7 +191,7 @@ fetch('https://cors.io/?https://anapioficeandfire.com/api/houses?name='+nname).t
             console.log(idx);
             var chlink = list[idx];
             console.log(chlink);
-            chlink = "https://cors.io/?"+chlink;
+            chlink = chlink;
             console.log(chlink);
             fetch(chlink).then(response => {
                 return response.json();
@@ -227,7 +227,7 @@ fetch('https://anapioficeandfire.com/api/houses/'+nname).then(response => {
 }
 function getrandchar(){
 var nname = randomize(1,1400);
-fetch('https://cors.io/?https://anapioficeandfire.com/api/characters/'+nname).then(response => {
+fetch('https://anapioficeandfire.com/api/characters/'+nname).then(response => {
             return response.json();
             }).then(data => {
              new_name= data.name;
