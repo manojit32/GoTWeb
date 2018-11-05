@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+@font-face {
+    font-family: 'got';
+    src: url('fonts/Game of Thrones.ttf');
+}
+body {
+    font-family: got;
+}
+* {
+    box-sizing: border-box;
+}
+
+form.example input[type=text] {
+    font-family: got;
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-radius: 3px;
+    align: left;
+    width: 80%;
+    background: #f1f1f1;
+    margin-bottom: 20px;
+}
+
+a{
+    
+    background-color: #a8760d;
+    color: #FFF;
+    border: 1.5px solid #333;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 1.5px 12px;
+    margin-bottom: 50px;
+    margin: 0 4px;
+    text-decoration: none;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    box-shadow: 0 0 5px 0 grey;
+    -moz-box-shadow: 0 0 5px 0 gray;
+    -webkit-box-shadow: 0 0 5px 0 grey;
+}
+
+#print{
+    display: none;
+    border: 1.5px solid #fff;
+    border-color: #dcf2e1;
+    padding: 2px;
+    color:#1b0e6b;
+    font-family:got;
+    width: 50%;
+}
+
+
+</style>
+</head>
+<body>
+<center>
+<h2 style="font-size: 23px;color: grey;">Game&nbsp;&nbsp;of&nbsp;&nbsp;Thrones&nbsp;&nbsp;Search&nbsp;&nbsp;Engine</h2>
+
+<form class="example" style="max-width:300px">
+  <input type="text" placeholder="Search.." id="search">
+  <a href="#" onclick="gethouse()">House&nbsp;&nbsp;Search</a>
+  </br>
+</br>
+</form>
+
+<form class="example" style="max-width:300px">
+    <input id="search2" type="text" placeholder="Search.." align="left">
+    <a href="#" onclick="getname()" align="right">Character&nbsp;&nbsp;Search</a>
+    </br>
+    </br>
+  </form>
+
+<form class="example" style="max-width:300px">
+    <input type="text" placeholder="Search.." id="search3">
+    <a href="#" onclick="getcharhouse()">Random&nbsp;&nbsp;Char&nbsp;&nbsp;from&nbsp;&nbsp;House</a>
+    </br>
+  </br>
+  </form>
+
+<form>
+    <a href="#" onclick="getrandchar()">Random&nbsp;&nbsp;Character</a>
+    <a href="#" onclick="getrandhouse()">Random&nbsp;&nbsp;House</a>
+    </br></br>
+</form>
+
+</br></br>
+
+<form id="area" style="width:50%;border: 3px solid #333;border-radius: 15px;padding: 5px;background-color: #dcf2e1;visibility: hidden;">
+    
+</br>
+    <h1 id="pname" style="display: none"></h1>
+</br>
+  <p id = "print" ></p>  
+</form>
+
+</center>
+<script>
+function getname(){
+var name = document.getElementById("search2").value;
+name=name.replace(/ /g,"+");
+var new_name;
+fetch('https://cors.io/?https://anapioficeandfire.com/api/characters?name='+name).then(response => {
+            return response.json();
+            }).then(data => {
+             new_name= data.name;
+             console.log(data);
+             if(data.length==0){
+                document.getElementById("area").style.visibility = "visible";
+                document.getElementById("pname").style.display = "inline";
+                document.getElementById("pname").innerHTML = "";
+                document.getElementById("print").style.display = "inline";
+                document.getElementById("print").innerHTML = "Data Not Found";
+                return true;
+             }
+            console.log(data[0].name);
+            console.log(data[0].aliases);
+            document.getElementById("area").style.visibility = "visible";
+            document.getElementById("pname").style.display = "inline";
+            document.getElementById("pname").innerHTML = data[0].name+"</br>";
+            document.getElementById("print").style.display = "inline";
+            document.getElementById("print").innerHTML = "Name : "+data[0].name+"</br>"+"Gender : "+data[0].gender+"</br>"
+            +"Culture : "+data[0].culture+"</br>Aliases : "+data[0].aliases;
+            return true;
+            });
+}
+function gethouse(){
+var nname = document.getElementById("search").value;
+nname=nname.replace(/ /g,"+");
+var new_name;
+fetch('https://cors.io/?https://anapioficeandfire.com/api/houses?name='+nname).then(response => {
+            return response.json();
+            }).then(data => {
+             new_name= data.name;
+             if(data.length==0){
+                document.getElementById("area").style.visibility = "visible";
+                document.getElementById("pname").style.display = "inline";
+                document.getElementById("pname").innerHTML = "";
+                document.getElementById("print").style.display = "inline";
+                document.getElementById("print").innerHTML = "Data Not Found";
+                return true;
+             }
+            console.log(data[0].titles);
+            document.getElementById("area").style.visibility = "visible";
+            document.getElementById("pname").style.display = "inline";
+            document.getElementById("pname").innerHTML = data[0].name;
+            document.getElementById("print").style.display = "inline";
+            document.getElementById("print").innerHTML = "Name : "+data[0].name+"</br>"+"Region : "+data[0].region+"</br>"+"Words : "+data[0].words+"</br>Titles : "+data[0].titles;
+            return true;
+            });
+}
+
+function randomize(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function getcharhouse(){
+var nname = document.getElementById("search3").value;
+nname=nname.replace(/ /g,"+");
+var new_name;
+fetch('https://cors.io/?https://anapioficeandfire.com/api/houses?name='+nname).then(response => {
+            return response.json();
+            }).then(data => {
+             new_name= data.name;
+             if(data.length==0){
+                document.getElementById("area").style.visibility = "visible";
+                document.getElementById("pname").style.display = "inline";
+                document.getElementById("pname").innerHTML = "";
+                document.getElementById("print").style.display = "inline";
+                document.getElementById("print").innerHTML = "Data Not Found";
+                return true;
+             }
+            var list = data[0].swornMembers;
+            if(list.length==0){
+                document.getElementById("area").style.visibility = "visible";
+                document.getElementById("pname").style.display = "inline";
+                document.getElementById("pname").innerHTML = data[0].name;
+                document.getElementById("print").style.display = "inline";
+                document.getElementById("print").innerHTML = "</br>"+"No Sworn Members in this house.";
+                return true;
+            }
+            var idx = Math.floor((Math.random() * list.length) + 0);
+            console.log(idx);
+            var chlink = list[idx];
+            console.log(chlink);
+            chlink = "https://cors.io/?"+chlink;
+            console.log(chlink);
+            fetch(chlink).then(response => {
+                return response.json();
+            }).then(data1 => {
+                console.log(data1);
+                document.getElementById("area").style.visibility = "visible";
+                document.getElementById("pname").style.display = "inline";
+                document.getElementById("pname").innerHTML = data1.name+"</br>";
+                document.getElementById("print").style.display = "inline";
+                document.getElementById("print").innerHTML = "Name  :  "+data1.name+"</br>"+"Gender  :  "+data1.gender+"</br>"
+                +"Culture  :  "+data1.culture+"</br>Aliases  :  "+data1.aliases;
+                return true;
+            });
+            return true;
+            });
+}
+
+function getrandhouse(){
+var nname = randomize(1,444);
+fetch('https://cors.io/?https://anapioficeandfire.com/api/houses/'+nname).then(response => {
+            return response.json();
+            }).then(data => {
+             new_name= data.name;
+            console.log(data);
+            document.getElementById("area").style.visibility = "visible";
+            document.getElementById("pname").style.display = "inline";
+            document.getElementById("pname").innerHTML = data.name+"</br>";
+            document.getElementById("print").style.display = "inline";
+            document.getElementById("print").innerHTML = "Name : "+data.name+"</br>"+"Region : "+data.region+"</br>"
+            +"Words : "+data.words+"</br>Titles : "+data.titles;
+            return true;
+            });
+}
+function getrandchar(){
+var nname = randomize(1,1400);
+fetch('https://cors.io/?https://anapioficeandfire.com/api/characters/'+nname).then(response => {
+            return response.json();
+            }).then(data => {
+             new_name= data.name;
+            console.log(data);
+            document.getElementById("area").style.visibility = "visible";
+            document.getElementById("pname").style.display = "inline";
+            document.getElementById("pname").innerHTML = data.name+"</br>";
+            document.getElementById("print").style.display = "inline";
+            document.getElementById("print").innerHTML = "Name  :  "+data.name+"</br>"+"Gender  :  "+data.gender+"</br>"
+            +"Culture  :  "+data.culture+"</br>Aliases  :  "+data.aliases;
+            return true;
+            });
+}
+</script>
+
+</body>
+</html> 
