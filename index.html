@@ -211,7 +211,7 @@ fetch('https://cors.io/?https://anapioficeandfire.com/api/houses?name='+nname).t
 
 function getrandhouse(){
 var nname = randomize(1,444);
-fetch('https://cors.io/?https://anapioficeandfire.com/api/houses/'+nname).then(response => {
+fetch('https://anapioficeandfire.com/api/houses/'+nname).then(response => {
             return response.json();
             }).then(data => {
              new_name= data.name;
